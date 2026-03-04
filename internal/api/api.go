@@ -2,6 +2,7 @@ package api
 
 import (
 	"sf-go/docs"
+	"sf-go/internal/api/handle"
 	"sf-go/internal/common"
 	"sf-go/internal/config"
 	"sf-go/internal/dao/db"
@@ -16,8 +17,11 @@ const SwaggerHost = "http://api.sohofreelancer.com"
 func Router(
 	dbInstance *db.DB,
 	baseCfg *config.ApiSrvCfg,
+	redis *db.RDB,
 ) *gin.Engine {
 	r := gin.Default()
+
+	r.Use(common.CrossDomainMiddleware())
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -34,7 +38,13 @@ func Router(
 			)
 		})
 	}
-	r.Use(common.CrossDomainMiddleware())
+	api.Use(common.AuthMiddleware(redis))
+	user := api.Group("/user")
+	{
+		user.POST("/logout", func(ctx *gin.Context) {
+			handle.Logout(ctx, dbInstance, redis)
+		})
+	}
 	// Swagger 文档路由
 	registerSwagger(r)
 

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sf-go/internal/common/consts"
+	"sf-go/internal/dao/db"
 	"sf-go/internal/dao/dto"
 	"sf-go/pkg/common"
 
@@ -37,8 +38,12 @@ func CrossDomainMiddleware() gin.HandlerFunc {
 	}
 }
 
-func AuthMiddleware(jwtSecret []byte) gin.HandlerFunc {
+func AuthMiddleware(rdb *db.RDB) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//if c.Request.URL.Path == "/trade/create-order" {
+		//	c.Next()
+		//	return
+		//}
 		app := dto.Gin{C: c}
 		authorizationStr := c.GetHeader("Authorization")
 		if authorizationStr == "" {
@@ -46,28 +51,26 @@ func AuthMiddleware(jwtSecret []byte) gin.HandlerFunc {
 			app.Response(http.StatusUnauthorized, dto.UNAUTHORIZED_ERROR, nil)
 			return
 		}
-		authorization := strings.Split(authorizationStr, consts.TOKEN_KEY)[1]
-		claims, err := common.ParseJWT(authorization, jwtSecret)
+		authorization := strings.Split(authorizationStr, consts.LoginPrefix)[1]
+		claims, err := common.ParseToken(authorization)
 		if err != nil {
 			c.Abort()
 			app.Response(http.StatusUnauthorized, dto.UNAUTHORIZED_ERROR, nil)
 			return
 		}
-		userId, ok := claims["user_id"]
+		user, ok := claims["user"]
 		if !ok {
 			c.Abort()
 			app.Response(http.StatusUnauthorized, dto.UNAUTHORIZED_ERROR, nil)
 			return
 		}
-		role, ok := claims["role"]
-		if !ok {
+		priceCmd := rdb.Rdb.Get(common.GetMD5Encode(consts.LoginPrefix + user.(string))).Val()
+		if priceCmd != authorization {
 			c.Abort()
 			app.Response(http.StatusUnauthorized, dto.UNAUTHORIZED_ERROR, nil)
 			return
 		}
-
-		c.Set("userId", userId)
-		c.Set("role", role)
+		c.Set("user", user)
 		c.Next()
 	}
 }

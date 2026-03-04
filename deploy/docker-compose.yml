@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+# api
+  api:
+    container_name: sf-api_v0.1
+    restart: always
+    volumes:
+      - '/home/ubuntu/sf/api/:/api/'
+    network_mode: "host"
+    working_dir: /api/
+    environment:
+      - CONFIG_PATH=/api/api.yaml
+    command:
+      - ./api
+    image: golang
+
+
+
+# notification
+  notification:
+    container_name: notification_v0.1
+    restart: always
+    volumes:
+      - '/home/ubuntu/quant-tool/notification/:/notification/'
+    network_mode: "host"
+    working_dir: /notification/
+    environment:
+      - CONFIG_PATH=/notification/notification.yaml
+    command:
+      - ./notification
+    image: golang

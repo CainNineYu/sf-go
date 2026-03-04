@@ -50,3 +50,4 @@ nacos/cache
 /deploy/spotbook
 /deploy/perpbook
 /deploy/option
+/deploy/api

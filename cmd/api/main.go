@@ -39,9 +39,12 @@ func main() {
 	if err != nil {
 		logs.Logger.Fatal("初始化数据库失败", zap.Error(err))
 	}
-
+	rdbCfg, err := dbpkg.NewRedisDB(cfg.RedisCfg)
+	if err != nil {
+		logs.Logger.Fatal("初始化Redis失败", zap.Error(err))
+	}
 	// 4. 启动 gin，端口号用 cfg.GinPort
-	r := api.Router(dbCfg, cfg)
+	r := api.Router(dbCfg, cfg, rdbCfg)
 
 	// 注册路由...
 	err = r.Run(cfg.Server.Port)
