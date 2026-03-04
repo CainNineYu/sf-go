@@ -1,0 +1,1415 @@
+definitions:
+  dto.AddHedgeSymbolConfigReq:
+    properties:
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - symbol
+    type: object
+  dto.AddPerpHedgeSymbolConfigReq:
+    properties:
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - symbol
+    type: object
+  dto.AddPerpSymbolConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.AddPerpWtConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.AddSpotSymbolConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.AddSpotWtConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.AiCloseReq:
+    properties:
+      accountAi:
+        type: string
+      accountId:
+        description: 需要下单的账户id
+        type: string
+      id:
+        description: 请求传入的唯一记账 ID / 策略 ID（原样返回）
+        type: string
+      symbol:
+        description: 交易币种
+        type: string
+    required:
+    - accountAi
+    - accountId
+    - id
+    - symbol
+    type: object
+  dto.AiPlaceReq:
+    properties:
+      accountId:
+        description: 需要下单的账户id
+        type: string
+      action:
+        description: 操作方向："LONG"（多） / "SHORT"（空）
+        enum:
+        - LONG
+        - SHORT
+        type: string
+      codeAI:
+        description: AI 密文“咒语”，用于防止用户转移到其他市场下单
+        type: string
+      entryPrice:
+        description: 入场估计价格
+        type: string
+      id:
+        description: 请求传入的唯一记账 ID / 策略 ID（原样返回）
+        type: string
+      leverage:
+        description: 固定杠杆
+        type: integer
+      open:
+        description: 用户是否需要开仓
+        type: boolean
+      posionValue:
+        description: 建议仓位金额（50u-2000u）,判断最小和最大值之后的数量
+        type: string
+      slRate:
+        description: |-
+          SlPx        string `json:"stopLoss" binding:"required"`                // 止损价格
+          TpPx        string `json:"takeProfit" binding:"required"`              // 止盈价格
+        type: string
+      symbol:
+        description: 交易币种（如 X:BTCUSD → BTC，对外采用 BN 规范）
+        type: string
+      timestamp:
+        description: Unix 毫秒时间戳，用于记账和策略记录
+        type: integer
+      tpRate:
+        description: 止盈百分比小数
+        type: string
+    required:
+    - accountId
+    - action
+    - codeAI
+    - entryPrice
+    - id
+    - leverage
+    - posionValue
+    - slRate
+    - symbol
+    - timestamp
+    - tpRate
+    type: object
+  dto.DeleteHedgeSymbolConfigReq:
+    properties:
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - symbol
+    type: object
+  dto.DeletePerpSymbolConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.DeletePerpWtConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.DeleteSpotSymbolConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.DeleteSpotWtConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.PerpSymbolInfoReq:
+    properties:
+      hostId:
+        type: string
+    required:
+    - hostId
+    type: object
+  dto.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
+    type: object
+  dto.SpotManualHedgeRequest:
+    properties:
+      accountId:
+        type: string
+      amount:
+        type: string
+      exchange:
+        enum:
+        - OKX
+        - BINANCE
+        - DTX
+        type: string
+      orderType:
+        type: string
+      price:
+        type: string
+      quantity:
+        type: string
+      side:
+        type: string
+      symbol:
+        type: string
+      syncSymbol:
+        type: string
+      txHash:
+        type: string
+    required:
+    - accountId
+    - amount
+    - exchange
+    - orderType
+    - price
+    - quantity
+    - side
+    - symbol
+    - syncSymbol
+    - txHash
+    type: object
+  dto.SpotSymbolInfoReq:
+    properties:
+      hostId:
+        type: string
+    required:
+    - hostId
+    type: object
+  dto.SwapManualHedgeRequest:
+    properties:
+      accountId:
+        type: string
+      amount:
+        type: string
+      exchange:
+        enum:
+        - OKX
+        - BINANCE
+        - DTX
+        type: string
+      leverage:
+        type: integer
+      orderType:
+        type: string
+      price:
+        type: string
+      quantity:
+        type: string
+      side:
+        type: string
+      symbol:
+        type: string
+      syncSymbol:
+        type: string
+      timestamp:
+        type: integer
+    required:
+    - accountId
+    - exchange
+    - leverage
+    - orderType
+    - price
+    - quantity
+    - side
+    - symbol
+    - syncSymbol
+    type: object
+  dto.UpdateHedgeSymbolConfigReq:
+    properties:
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - symbol
+    type: object
+  dto.UpdatePerpHedgeAccFundCfgReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.UpdatePerpHedgeSymbolConfigReq:
+    properties:
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - symbol
+    type: object
+  dto.UpdatePerpMkAccFundCfgReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.UpdatePerpSymbolConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.UpdatePerpWtConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.UpdateSpotHedgeAccFundCfgReq:
+    properties:
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - symbol
+    type: object
+  dto.UpdateSpotMkAccFundCfgReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.UpdateSpotSymbolConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+  dto.UpdateSpotWtConfigReq:
+    properties:
+      hostId:
+        description: 服务器Id，更新的时候不能更新hostId,新增必传
+        type: string
+      symbol:
+        description: 交易对 必传
+        type: string
+    required:
+    - hostId
+    - symbol
+    type: object
+info:
+  contact: {}
+paths:
+  /ai-close:
+    post:
+      consumes:
+      - application/json
+      description: AI平仓
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AiCloseReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: AI平仓
+      tags:
+      - AI平仓
+  /ai-close-all:
+    post:
+      consumes:
+      - application/json
+      description: AI平仓
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AiCloseReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: AI平仓
+      tags:
+      - AI平仓
+  /ai-place:
+    post:
+      consumes:
+      - application/json
+      description: AI下单
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AiPlaceReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: AI下单
+      tags:
+      - AI下单
+  /hedge-symbol-cfg-query:
+    get:
+      consumes:
+      - application/json
+      description: 查询对冲符号配置信息
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 对冲配置查询
+      tags:
+      - 对冲配置
+  /perp/add-custom-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 自定义添加永续交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddPerpSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 自定义添加永续交易对配置
+      tags:
+      - 永续自定义交易对配置
+  /perp/add-hedge-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 添加合约对冲币种配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddPerpHedgeSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 添加合约对冲币种配置
+      tags:
+      - 添加合约对冲币种配置
+  /perp/add-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 添加永续交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddPerpSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 添加永续交易对配置
+      tags:
+      - 永续交易对配置
+  /perp/add-wt:
+    post:
+      consumes:
+      - application/json
+      description: 添加永续刷量配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddPerpWtConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 添加永续刷量配置
+      tags:
+      - 永续刷量配置
+  /perp/del-custom-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 删除永续自定义交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeletePerpSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 删除永续自定义交易对配置
+      tags:
+      - 永续自定义交易对配置
+  /perp/del-hedge-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 删除合约对冲币种配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeleteHedgeSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 删除合约对冲币种配置
+      tags:
+      - 删除合约对冲币种配置
+  /perp/del-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 删除永续交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeletePerpSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 删除永续交易对配置
+      tags:
+      - 永续交易对配置
+  /perp/del-wt:
+    post:
+      consumes:
+      - application/json
+      description: 删除永续刷量配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeletePerpWtConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 删除永续刷量配置
+      tags:
+      - 永续刷量配置
+  /perp/manual-hedge:
+    post:
+      consumes:
+      - application/json
+      description: 合约人工对冲
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SwapManualHedgeRequest'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 合约人工对冲
+      tags:
+      - 合约人工对冲
+  /perp/symbol-info:
+    post:
+      consumes:
+      - application/json
+      description: 获取交易对内部信息
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PerpSymbolInfoReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 获取交易对内部信息
+      tags:
+      - 交易对信息
+  /perp/update-custom-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 修改永续自定义交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePerpSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 修改永续自定义交易对配置
+      tags:
+      - 永续自定义交易对配置
+  /perp/update-hedge-acc-fund:
+    post:
+      consumes:
+      - application/json
+      description: 更新永续对冲账户资金监控配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePerpHedgeAccFundCfgReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 更新永续对冲账户资金监控配置
+      tags:
+      - 更新永续对冲账户资金监控配置
+  /perp/update-hedge-list:
+    post:
+      consumes:
+      - application/json
+      description: 更新合约对冲名单
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 更新合约对冲名单（无请求体）
+      tags:
+      - 更新合约对冲名单
+  /perp/update-hedge-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 更新合约对冲币种配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePerpHedgeSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 更新合约对冲币种配置
+      tags:
+      - 更新合约对冲币种配置
+  /perp/update-mkacc-fund:
+    post:
+      consumes:
+      - application/json
+      description: 永续做市账户资金监控更新配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePerpMkAccFundCfgReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 永续做市账户资金监控更新配置
+      tags:
+      - 永续做市账户资金监控更新配置
+  /perp/update-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 修改永续交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePerpSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 修改永续交易对配置
+      tags:
+      - 永续交易对配置
+  /perp/update-wt:
+    post:
+      consumes:
+      - application/json
+      description: 修改永续刷量配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePerpWtConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 修改永续刷量配置
+      tags:
+      - 永续刷量配置
+  /spot/add-custom-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 添加现货自定义交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddSpotSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 添加现货自定义交易对配置
+      tags:
+      - 现货自定义交易对配置
+  /spot/add-hedge-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 添加对冲币种配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddHedgeSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 添加对冲币种配置
+      tags:
+      - 添加对冲币种配置
+  /spot/add-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 添加现货交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddSpotSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 添加现货交易对配置
+      tags:
+      - 现货交易对配置
+  /spot/add-wt:
+    post:
+      consumes:
+      - application/json
+      description: 添加现货刷量配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddSpotWtConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 添加现货刷量配置
+      tags:
+      - 现货刷量配置
+  /spot/del-custom-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 删除现货自定义交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeleteSpotSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 删除现货自定义交易对配置
+      tags:
+      - 现货自定义交易对配置
+  /spot/del-hedge-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 删除对冲币种配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeleteHedgeSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 删除对冲币种配置
+      tags:
+      - 删除对冲币种配置
+  /spot/del-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 删除现货交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeleteSpotSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 删除现货交易对配置
+      tags:
+      - 现货交易对配置
+  /spot/del-wt:
+    post:
+      consumes:
+      - application/json
+      description: 删除现货刷量配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeleteSpotWtConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 删除现货刷量配置
+      tags:
+      - 现货刷量配置
+  /spot/manual-hedge:
+    post:
+      consumes:
+      - application/json
+      description: 现货人工对冲
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SpotManualHedgeRequest'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 现货人工对冲
+      tags:
+      - 现货人工对冲
+  /spot/symbol-info:
+    post:
+      consumes:
+      - application/json
+      description: 获取交易对内部信息
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SpotSymbolInfoReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 获取交易对内部信息
+      tags:
+      - 交易对信息
+  /spot/update-custom-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 修改现货自定义交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateSpotSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 修改现货自定义交易对配置
+      tags:
+      - 现货自定义交易对配置
+  /spot/update-hedge-acc-fund:
+    post:
+      consumes:
+      - application/json
+      description: 更新现货对冲账户资金监控配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateSpotHedgeAccFundCfgReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 更新现货对冲账户资金监控配置
+      tags:
+      - 更新现货对冲账户资金监控配置
+  /spot/update-hedge-list:
+    post:
+      consumes:
+      - application/json
+      description: 更新现货对冲名单
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 更新现货对冲名单（无请求体）
+      tags:
+      - 更新现货对冲名单
+  /spot/update-hedge-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 更新对冲币种配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateHedgeSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 更新对冲币种配置
+      tags:
+      - 更新对冲币种配置
+  /spot/update-mkacc-fund:
+    post:
+      consumes:
+      - application/json
+      description: 现货做市账户资金监控更新配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateSpotMkAccFundCfgReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 现货做市账户资金监控更新配置
+      tags:
+      - 现货做市账户资金监控更新配置
+  /spot/update-symbol:
+    post:
+      consumes:
+      - application/json
+      description: 修改现货交易对配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateSpotSymbolConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 修改现货交易对配置
+      tags:
+      - 现货交易对配置
+  /spot/update-wt:
+    post:
+      consumes:
+      - application/json
+      description: 修改现货刷量配置
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateSpotWtConfigReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: 修改现货刷量配置
+      tags:
+      - 现货刷量配置
+  /v2/ai-place:
+    post:
+      consumes:
+      - application/json
+      description: AI下单V2
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AiPlaceReq'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: 成功
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: 非0失败，data为空
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: AI下单V2
+      tags:
+      - AI下单V2
+swagger: "2.0"

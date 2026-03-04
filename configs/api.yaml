@@ -1,0 +1,26 @@
+server:
+  port: ":40001"
+  jwt_secret: "aeraserfadf4555"
+
+reader_database:
+  user: "PRD"
+  database: "tool"
+  host: "rm-j6c4s2k12d0ia47appo.mysql.rds.aliyuncs.com"
+  port: "3306"
+  password: "1Gejizhi!"
+  max_open_conns: 50
+  max_idle_conns: 10
+
+writer_database:
+  user: "PRD"
+  database: "tool"
+  host: "rm-j6c4s2k12d0ia47appo.mysql.rds.aliyuncs.com"
+  port: "3306"
+  password: "1Gejizhi!"
+  max_open_conns: 50
+  max_idle_conns: 10
+
+redis:
+  addr: "127.0.0.1:6379"
+  password: ""
+  db: 1

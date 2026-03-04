@@ -1,0 +1,52 @@
+# Build and Release Folders
+bin-debug/
+bin-release/
+[Oo]bj/
+[Bb]in/
+
+# Other files and folders
+.settings/
+
+# Executables
+*.swf
+*.air
+*.ipa
+*.apk
+*.log
+*.logs
+# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# should NOT be excluded as they contain compiler settings and other important
+# information for Eclipse / Flash Builder.
+
+deploy/app/
+.idea
+/deploy/app
+
+# nacos
+nacos/log
+nacos/cache
+
+/deploy/notification
+/deploy/task
+/deploy/admin
+/deploy/external-acc-monitor
+/deploy/market-acc-monitor
+/deploy/spot-book
+/deploy/ETC.env
+/deploy/TRB.env
+/deploy/CRV.env
+/deploy/perp-book
+/deploy/C.env
+
+/deploy/SSV.env
+/deploy/HYPE.env
+/deploy/PENGU.env
+/deploy/spotwt
+/deploy/perpwt
+/deploy/ext-acc
+/deploy/ext-perp-acc
+/deploy/market-acc
+/deploy/market-perp-acc
+/deploy/spotbook
+/deploy/perpbook
+/deploy/option
