@@ -1,5 +1,5 @@
 server:
-  port: ":40001"
+  port: ":40002"
   jwt_secret: "aeraserfadf4555"
 
 reader_database:

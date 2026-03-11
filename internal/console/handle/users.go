@@ -15,6 +15,40 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//func EmailRegister(c *gin.Context, db *db.DB, rdb *db.RDB) {
+//	app := dto.Gin{C: c}
+//	req := dto.NewEmailRegisterReq()
+//	if err := req.Bind(&app); err != nil {
+//		return
+//	}
+//
+//	pwd := common.GetMD5Encode(req.Password)
+//	//TODO: 取消注释
+//	//redisKey := consts.VALIDATE_KEY + consts.SIGNUP + "_" + req.Email
+//	//captchaBool := redis.RedisClient.Rdb.Get(redisKey)
+//	//if captchaBool.Val() != req.Captcha {
+//	//	app.Response(http.StatusInternalServerError, resUtils.CAPTCHA_ERROR, nil)
+//	//	return
+//	//}
+//	usersDAO := dao.NewUsersDAO(db)
+//	userInfo, err := usersDAO.UserByEmail(req.Email)
+//	if err != nil {
+//		app.Response(http.StatusInternalServerError, resUtils.NETWORK_ERROR, nil)
+//		return
+//	}
+//	if len(userInfo) != 0 {
+//		app.Response(http.StatusInternalServerError, resUtils.HAVE_REGISTERED, nil)
+//		return
+//	}
+//
+//	err = db.AddUsers(req.Email, req.Email, "", pwd)
+//	if err != nil {
+//		app.Response(http.StatusInternalServerError, resUtils.NETWORK_ERROR, nil)
+//		return
+//	}
+//	app.Response(http.StatusOK, resUtils.SUCCESS, nil)
+//}
+
 func Login(c *gin.Context, db *db.DB, rdb *db.RDB) {
 	app := dto.Gin{C: c}
 	req := dto.NewLoginReq()

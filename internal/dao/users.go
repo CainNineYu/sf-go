@@ -52,6 +52,16 @@ func (u *UsersDAO) UserByUser(user string) (models.Users, error) {
 	return users, nil
 }
 
+// UserByEmail 根据 Email 字段查找用户
+func (u *UsersDAO) UserByEmail(email string) (*models.Users, error) {
+	//var list []Users
+	//if err := u.db.ReadDB.Where("email = ?", email).Find(&users).Error; err != nil {
+	//	return users, err
+	//}
+	//return users, nil
+	return nil, nil
+}
+
 // 根据 user 和 password 查找用户
 func (u *UsersDAO) UserByPwd(email string, password string) (models.Users, error) {
 	var users models.Users

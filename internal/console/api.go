@@ -1,10 +1,10 @@
-package api
+package console
 
 import (
 	"sf-go/docs"
-	"sf-go/internal/api/handle"
 	"sf-go/internal/common"
 	"sf-go/internal/config"
+	"sf-go/internal/console/handle"
 	"sf-go/internal/dao/db"
 
 	"github.com/gin-gonic/gin"
@@ -31,6 +31,12 @@ func Router(
 
 	index := api.Group("/")
 	{
+		//index.POST("/register/email", func(ctx *gin.Context) {
+		//	handle.EmailRegister(ctx,
+		//		dbInstance,
+		//		redis,
+		//	)
+		//})
 		index.POST("/login", func(ctx *gin.Context) {
 			handle.Login(ctx,
 				dbInstance,

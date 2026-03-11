@@ -1,8 +1,8 @@
 package main
 
 import (
-	"sf-go/internal/api"
 	"sf-go/internal/config"
+	"sf-go/internal/console"
 	dbpkg "sf-go/internal/dao/db"
 
 	"go.uber.org/zap"
@@ -44,7 +44,7 @@ func main() {
 		logs.Logger.Fatal("初始化Redis失败", zap.Error(err))
 	}
 	// 4. 启动 gin，端口号用 cfg.GinPort
-	r := api.Router(dbCfg, cfg, rdbCfg)
+	r := console.Router(dbCfg, cfg, rdbCfg)
 
 	// 注册路由...
 	err = r.Run(cfg.Server.Port)
