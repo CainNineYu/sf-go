@@ -2,52 +2,126 @@ package handle
 
 import (
 	"fmt"
+	"github.com/pochard/commons/randstr"
+	"go.uber.org/zap"
 	"net/http"
 	"sf-go/internal/common/consts"
-	consts2 "sf-go/internal/common/consts"
-
 	"sf-go/internal/dao"
 	"sf-go/internal/dao/db"
+	"sf-go/internal/dao/models"
 	"sf-go/internal/dto"
+	"sf-go/logs"
 	"sf-go/pkg/common"
+	"sf-go/pkg/emails"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-//func EmailRegister(c *gin.Context, db *db.DB, rdb *db.RDB) {
-//	app := dto.Gin{C: c}
-//	req := dto.NewEmailRegisterReq()
-//	if err := req.Bind(&app); err != nil {
-//		return
-//	}
-//
-//	pwd := common.GetMD5Encode(req.Password)
-//	//TODO: 取消注释
-//	//redisKey := consts.VALIDATE_KEY + consts.SIGNUP + "_" + req.Email
-//	//captchaBool := redis.RedisClient.Rdb.Get(redisKey)
-//	//if captchaBool.Val() != req.Captcha {
-//	//	app.Response(http.StatusInternalServerError, resUtils.CAPTCHA_ERROR, nil)
-//	//	return
-//	//}
-//	usersDAO := dao.NewUsersDAO(db)
-//	userInfo, err := usersDAO.UserByEmail(req.Email)
-//	if err != nil {
-//		app.Response(http.StatusInternalServerError, resUtils.NETWORK_ERROR, nil)
-//		return
-//	}
-//	if len(userInfo) != 0 {
-//		app.Response(http.StatusInternalServerError, resUtils.HAVE_REGISTERED, nil)
-//		return
-//	}
-//
-//	err = db.AddUsers(req.Email, req.Email, "", pwd)
-//	if err != nil {
-//		app.Response(http.StatusInternalServerError, resUtils.NETWORK_ERROR, nil)
-//		return
-//	}
-//	app.Response(http.StatusOK, resUtils.SUCCESS, nil)
-//}
+func SendEmail(c *gin.Context, db *db.DB, rdb *db.RDB) {
+	app := dto.Gin{C: c}
+	req := dto.NewEmailSendReq()
+	if err := req.Bind(&app); err != nil {
+		return
+	}
+
+	errEmail := common.VerifyEmailFormat(req.Email)
+	if !errEmail {
+		app.Response(http.StatusBadRequest, dto.EMAIL_ERROR, nil)
+		return
+	}
+
+	//注册校验
+	if req.SendType == string(dao.SendTypeSignup) {
+		usersDAO := dao.NewUsersDAO(db)
+		userInfo, err := usersDAO.UserByEmail(req.Email)
+		if err != nil {
+			app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
+			return
+		}
+		if userInfo.Email != "" {
+			app.Response(http.StatusInternalServerError, dto.HAVE_REGISTERED, nil)
+			return
+		}
+
+		send(&app, req.SendType, req.Email, rdb)
+		return
+	}
+	//密码重置
+	if req.SendType == string(dao.SendTypeUpdatePassword) {
+		usersDAO := dao.NewUsersDAO(db)
+		userInfo, err := usersDAO.UserByEmail(req.Email)
+		if err != nil {
+			app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
+			return
+		}
+		if userInfo.Email != "" {
+			app.Response(http.StatusInternalServerError, dto.HAVE_REGISTERED, nil)
+			return
+		}
+		send(&app, req.SendType, req.Email, rdb)
+		return
+	}
+	app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
+	return
+
+}
+
+func EmailRegister(c *gin.Context, db *db.DB, rdb *db.RDB) {
+	app := dto.Gin{C: c}
+	req := dto.NewEmailRegisterReq()
+	if err := req.Bind(&app); err != nil {
+		return
+	}
+
+	pwd := common.GetMD5Encode(req.Password)
+	//TODO: 取消注释
+	//redisKey := consts.VALIDATE_KEY + consts.SIGNUP + "_" + req.Email
+	//captchaBool := redis.RedisClient.Rdb.Get(redisKey)
+	//if captchaBool.Val() != req.Captcha {
+	//	app.Response(http.StatusInternalServerError, resUtils.CAPTCHA_ERROR, nil)
+	//	return
+	//}
+	usersDAO := dao.NewUsersDAO(db)
+	userInfo, err := usersDAO.UserByEmail(req.Email)
+	if err != nil {
+		app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
+		return
+	}
+	if userInfo.Email != "" {
+		app.Response(http.StatusInternalServerError, dto.HAVE_REGISTERED, nil)
+		return
+	}
+	if req.InviteUuid != "000000" {
+		userParent, er := usersDAO.UserByUuid(req.InviteUuid)
+		if er != nil {
+			app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
+			return
+		}
+		if userParent.User == "" {
+			app.Response(http.StatusInternalServerError, dto.INVITATION_CODE_ERROR, nil)
+			return
+		}
+	}
+	now := time.Now().UnixMilli()
+	uuid := randstr.Random(6, "abcdefghijklmnopqrstuvwxyz1234567890")
+	user := &models.Users{
+		Uuid:      uuid,
+		User:      req.Email,
+		Name:      req.Email,
+		Email:     req.Email,
+		Password:  pwd,
+		LastAt:    now,
+		CreatedAt: now,
+		UpdatedAt: now,
+	}
+	err = usersDAO.AddUser(user)
+	if err != nil {
+		app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
+		return
+	}
+	app.Response(http.StatusOK, dto.SUCCESS, nil)
+}
 
 func Login(c *gin.Context, db *db.DB, rdb *db.RDB) {
 	app := dto.Gin{C: c}
@@ -80,7 +154,7 @@ func Login(c *gin.Context, db *db.DB, rdb *db.RDB) {
 		app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
 		return
 	}
-	err = rdb.Rdb.Set(common.GetMD5Encode(consts2.LoginPrefix+userInfo.User), accessToken, consts.TokenTimeOut).Err()
+	err = rdb.Rdb.Set(common.GetMD5Encode(consts.LoginPrefix+userInfo.User), accessToken, consts.TokenTimeOut).Err()
 	if err != nil {
 		app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
 		return
@@ -152,7 +226,7 @@ func Logout(c *gin.Context, db *db.DB, rdb *db.RDB) {
 		app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
 		return
 	}
-	res := rdb.Rdb.Del(common.GetMD5Encode(consts2.LoginPrefix + user.(string))).Val()
+	res := rdb.Rdb.Del(common.GetMD5Encode(consts.LoginPrefix + user.(string))).Val()
 	if res != 1 {
 		app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
 		return
@@ -190,4 +264,20 @@ func UpPassword(c *gin.Context, db *db.DB) {
 	app.Response(http.StatusOK, dto.SUCCESS, nil)
 	return
 
+}
+
+func send(app *dto.Gin, funcTp string, email string, rdb *db.RDB) {
+	redisKey := consts.VALIDATE_KEY + funcTp + "_" + email
+	code := randstr.Random(6, "1234567890")
+	fmt.Println(code)
+	str := fmt.Sprintf("【BitBotX】验证码%s，切勿将验证码泄漏于他人，本条验证码有效期10分钟。", code)
+	rdb.Rdb.Set(redisKey, code, time.Minute*10)
+	err := emails.Send("BitBotX", str, email)
+	if err != nil {
+		logs.Logger.Error("send email failed", zap.String("err", err.Error()))
+		app.Response(http.StatusInternalServerError, dto.NETWORK_ERROR, nil)
+		return
+	}
+	app.Response(http.StatusOK, dto.SUCCESS, nil)
+	return
 }

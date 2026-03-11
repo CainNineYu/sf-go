@@ -2,8 +2,10 @@ package dao
 
 import (
 	"errors"
+	"go.uber.org/zap"
 	"sf-go/internal/dao/db"
 	"sf-go/internal/dao/models"
+	"sf-go/logs"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -43,6 +45,15 @@ func NewUsersDAO(db *db.DB) *UsersDAO {
 	return &UsersDAO{db: db}
 }
 
+func (u *UsersDAO) AddUser(user *models.Users) error {
+	err := u.db.WriteDB.Create(&user).Error
+	if err != nil {
+		logs.Logger.Error("AddUser Error", zap.Error(err))
+		return err
+	}
+	return nil
+}
+
 // 根据 user 字段查找用户
 func (u *UsersDAO) UserByUser(user string) (models.Users, error) {
 	var users models.Users
@@ -54,12 +65,20 @@ func (u *UsersDAO) UserByUser(user string) (models.Users, error) {
 
 // UserByEmail 根据 Email 字段查找用户
 func (u *UsersDAO) UserByEmail(email string) (*models.Users, error) {
-	//var list []Users
-	//if err := u.db.ReadDB.Where("email = ?", email).Find(&users).Error; err != nil {
-	//	return users, err
-	//}
-	//return users, nil
-	return nil, nil
+	var user models.Users
+	if err := u.db.ReadDB.Where("email = ?", email).Find(&user).Error; err != nil {
+		return &user, err
+	}
+	return &user, nil
+}
+
+// UserByUuid 根据 Email 字段查找用户
+func (u *UsersDAO) UserByUuid(uuid string) (*models.Users, error) {
+	var user models.Users
+	if err := u.db.ReadDB.Where("uuid = ?", uuid).Find(&user).Error; err != nil {
+		return &user, err
+	}
+	return &user, nil
 }
 
 // 根据 user 和 password 查找用户

@@ -26,3 +26,10 @@ const (
 	OrderActionsTypeClose         OrderActionsType = "close"
 	OrderActionsTypeCancelPending OrderActionsType = "cancelPending"
 )
+
+type SendType string
+
+const (
+	SendTypeSignup         SendType = "signup"
+	SendTypeUpdatePassword SendType = "update_password"
+)

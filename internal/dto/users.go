@@ -7,6 +7,10 @@ import (
 	"sf-go/pkg/common"
 )
 
+type EmailSendReq struct {
+	Email    string `json:"email"`
+	SendType string `json:"sendType"  binding:"omitempty,oneof=signup update_password"`
+}
 type EmailRegisterReq struct {
 	Email      string `json:"email"`
 	Password   string `json:"password"`
@@ -146,6 +150,22 @@ type MarkPriceCandlesReq struct {
 // Note            string    `gorm:"column:note;type:text"`              // 备注
 // CreatedAt       time.Time `gorm:"column:created_at;autoCreateTime"`
 // UpdatedAt       time.Time `gorm:"column:updated_at;autoUpdateTime"`
+
+func NewEmailSendReq() *EmailSendReq {
+	return &EmailSendReq{}
+}
+func (e *EmailSendReq) Bind(g *Gin) error {
+	if err := g.C.ShouldBindJSON(e); err != nil {
+		g.DirectResponse(http.StatusBadRequest, err.Error(), nil)
+		return err
+	}
+	okEmail := common.VerifyEmailFormat(e.Email)
+	if !okEmail {
+		g.Response(http.StatusBadRequest, EMAIL_ERROR, nil)
+		return errors.New("email error")
+	}
+	return nil
+}
 
 func NewEmailRegisterReq() *EmailRegisterReq {
 	return &EmailRegisterReq{}
