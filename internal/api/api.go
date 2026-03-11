@@ -1,4 +1,4 @@
-package console
+package api
 
 import (
 	"sf-go/docs"
@@ -16,7 +16,7 @@ const SwaggerHost = "http://api.sohofreelancer.com"
 
 func Router(
 	dbInstance *db.DB,
-	baseCfg *config.ConsoleSrvCfg,
+	baseCfg *config.ApiSrvCfg,
 	redis *db.RDB,
 ) *gin.Engine {
 	r := gin.Default()
